@@ -1,0 +1,73 @@
+#
+# Copyright 2016-present the original author or authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+driver:
+  tenant: default
+  name: PlcS7驱动
+  code: PlcS7Driver
+  type: DRIVER
+  remark: @project.description@
+  schedule:
+    # 定时读数据
+    read:
+      enable: true
+      corn: '0/30 * * * * ?'
+    custom:
+      enable: true
+      corn: '0/5 * * * * ?'
+  driver-attribute:
+    - display-name: 主机
+      attribute-name: host
+      attribute-type-flag: STRING
+      default-value: 192.168.0.20
+      remark: Ip
+    - display-name: 端口
+      attribute-name: port
+      attribute-type-flag: INT
+      default-value: 102
+      remark: Port
+  point-attribute:
+    - display-name: DB序号
+      attribute-name: dbNum
+      attribute-type-flag: INT
+      default-value: 0
+      remark: 数据块号，从 0 开始计数
+    - display-name: 字偏移
+      attribute-name: byteOffset
+      attribute-type-flag: INT
+      default-value: 0
+      remark: 字偏移
+    - display-name: 位偏移
+      attribute-name: bitOffset
+      attribute-type-flag: INT
+      default-value: 0
+      remark: 位偏移
+    - display-name: 数据块长度
+      attribute-name: blockSize
+      attribute-type-flag: INT
+      default-value: 8
+      remark: 数据块长度
+
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active:
+      - ${NODE_ENV:dev}
+
+logging:
+  file:
+    name: dc3/logs/driver/plcs7/${spring.application.name}.log
